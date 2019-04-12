@@ -24,10 +24,16 @@ class GlobalBladeEngine {
                 throw new \Exception("Error: View paths must be defined before running init.");
             }
 
+            //Clear cache on local instance
+            self::maybeClearCache(); 
+
+            //Create cache path
+            self::createComponentCachePath(); 
+
             //Create new blade instance
             $globalBladeEngineInstance = new BladeInstance(
                 (array) self::getViewPaths(),
-                (string) sys_get_temp_dir() . '/global-blade-engine-cache/'
+                (string) sys_get_temp_dir() . '/global-blade-engine-cache'
             );
 
             //Check for newly created instance
@@ -90,6 +96,63 @@ class GlobalBladeEngine {
         
         //Error if something went wrong
         throw new \Exception("Error getting view paths " . $path);
+    }
+
+    /**
+     * Create a cache dir
+     *
+     * @return string Local path to the cache path
+     */
+    private static function createComponentCachePath() : string
+    {
+
+        $cachePath = (string) sys_get_temp_dir() . '/global-blade-engine-cache'; 
+
+        if (!file_exists($cachePath)) {
+            if (!mkdir($cachePath, 0764, true)) {
+                throw new \Exception("Could not create cache folder: " . $cachePath);
+            }
+        }
+
+        return (string) $cachePath;
+    }
+
+    /**
+     * Clears blade cache if in dev domain
+     *
+     * @return boolean True if cleared, false otherwise
+     */
+    private static function maybeClearCache($objectPath = null)
+    {
+
+        $cachePath = (string) sys_get_temp_dir() . '/global-blade-engine-cache'; 
+
+        if(strpos($_SERVER['HTTP_HOST'], '.local') !== false){
+
+            $dir = rtrim($cachePath, "/") . DIRECTORY_SEPARATOR; 
+
+            if (is_dir($dir)) { 
+
+                $objects = array_diff(scandir($dir), array('..', '.'));
+
+                if(is_array($objects) && !empty($objects)) {
+
+                    foreach ($objects as $object) {
+                        $objectPath = $dir."/".$object;
+
+                        if(is_dir($objectPath)) {
+                            self::maybeClearCache($objectPath); 
+                        } else {
+                            unlink($objectPath);
+                        }
+                    }
+                }
+
+                rmdir($dir); 
+            }
+        }
+        
+        return false; 
     }
 
 }
