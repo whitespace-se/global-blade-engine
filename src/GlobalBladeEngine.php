@@ -127,7 +127,7 @@ class GlobalBladeEngine {
 
         $cachePath = (string) sys_get_temp_dir() . '/global-blade-engine-cache'; 
 
-        if(strpos($_SERVER['HTTP_HOST'], '.local') !== false){
+        if(defined('GLOBAL_BLADE_ENGINE_CLEAR_CACHE')  && GLOBAL_BLADE_ENGINE_CLEAR_CACHE === true){
 
             $dir = rtrim($cachePath, "/") . DIRECTORY_SEPARATOR; 
 

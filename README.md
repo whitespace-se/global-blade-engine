@@ -21,6 +21,11 @@ Blade::addViewPath(BASEPATH . 'views');
 
 echo Blade::instance()->make($view, $data)->render();
 ```
+## Developer mode
+Add the following CONSTANT to your config file to clear the blade cache while in development mode:
+```php
+define( 'GLOBAL_BLADE_ENGINE_CLEAR_CACHE' , true );
+```
 
 ## Built With 
 - Laravel Blade 5.8 based on standalone version benjamincrozat/blade
