@@ -129,8 +129,12 @@ class ComposerStaticInit51e38fd6de012fd50e6bf0d1693b0346
         ),
         'BC\\Blade\\' => 
         array (
-            0 => __DIR__ . '/..' . '/benjamincrozat/blade/src',
+            0 => __DIR__ . '/..' . '/helsingborg-stad/blade/src',
         ),
+    );
+
+    public static $classMap = array (
+        'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
@@ -138,6 +142,7 @@ class ComposerStaticInit51e38fd6de012fd50e6bf0d1693b0346
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInit51e38fd6de012fd50e6bf0d1693b0346::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInit51e38fd6de012fd50e6bf0d1693b0346::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit51e38fd6de012fd50e6bf0d1693b0346::$classMap;
 
         }, null, ClassLoader::class);
     }
