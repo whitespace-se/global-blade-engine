@@ -31,7 +31,7 @@ define( 'GLOBAL_BLADE_ENGINE_CLEAR_CACHE' , true );
 - Laravel Blade 5.8 based on standalone version benjamincrozat/blade
 
 ## Dependencies
-- PHP 7.3
+- PHP ^8.3
 
 ## Releases
 
